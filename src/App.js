@@ -13,7 +13,6 @@ class App extends Component {
     //   phone:"", 
     //   age:"21"
     // },
-
     ]
   }
 

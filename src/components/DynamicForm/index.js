@@ -1,11 +1,13 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import './form.css';
 
-function validate(email, phone, password, cpassword) {
+function validate(fname, lname, email, phone, age, password, cpassword) {
             return {
+                fname: fname.length === 0,
+                lname: lname.length === 0,
                 email: email.length === 0,
                 phone: phone.length === 0 || phone.length > 10,
+                age: age === 0,
                 password: password.length === 0,
                 cpassword: cpassword !== password
             }
@@ -14,8 +16,7 @@ function validate(email, phone, password, cpassword) {
 
 
 export default class DynamicForm extends React.Component {
-    state = {
-        
+    state = {  
         fname: "",
         lname: "",   
         email: "",
@@ -23,9 +24,6 @@ export default class DynamicForm extends React.Component {
         age: "",
         password: "",
         cpassword: ""
-    }
-    constructor(props) {
-        super(props);
     }
 
     onSubmit = (e) => {
@@ -48,9 +46,7 @@ export default class DynamicForm extends React.Component {
 
    
 
-    renderForm = () => {
-        
-        
+    renderForm = () => {        
         let fields = this.props.model;
         let formUI = fields.map((m) => {
             let key = m.key
@@ -66,13 +62,12 @@ export default class DynamicForm extends React.Component {
                     </label>
                     <input {...props}
                         ref={(key) => {this[m.key]=key}}
-                        className="form-input"
+                        className="form-group"
                         type={type}
                         key={"i" + m.key}
                         onChange={(e) => {this.onChange(e, key)}}
                     />
                 </div>
-
             );
         });
         return formUI;
@@ -84,8 +79,7 @@ export default class DynamicForm extends React.Component {
     render(){
         
         let title = this.props.title || "Dynamic Form";
-        const errors = validate(this.state.email, this.state.phone, this.state.password, this.state.cpassword);
-        const isEnabled = !Object.keys(errors).some(x => errors[x]);
+        const errors = validate(this.state.fname, this.state.lname, this.state.email, this.state.phone, this.state.age, this.state.password, this.state.cpassword);        const isEnabled = !Object.keys(errors).some(x => errors[x]);
         return (
             <div className={this.props.className}>
                 <h3>{title}</h3>
